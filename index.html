@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <style>
+        .stopwatch {
+            text-align: center;
+            margin-top: 20%;
+        }
+        h1 {
+            font-size: 48px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="stopwatch">
+        <h1 id="display">00:00:00</h1>
+        <div class="buttons">
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+        </div>
+        <p id="message" style="display: none; color: blue;">One minute has passed!</p>
+    </div>
+    <script>
+        let seconds = 0;
+        let interval;
+
+        const display = document.getElementById('display');
+        const startButton = document.getElementById('start');
+        const stopButton = document.getElementById('stop');
+        const resetButton = document.getElementById('reset');
+        const message = document.getElementById('message');
+
+        function updateDisplay() {
+            const formattedSeconds = seconds % 60 < 10 ? '0' + (seconds % 60) : seconds % 60;
+            const formattedMinutes = Math.floor(seconds / 60) % 60 < 10 ? '0' + Math.floor(seconds / 60) % 60 : Math.floor(seconds / 60) % 60;
+            const formattedHours = Math.floor(seconds / 3600) < 10 ? '0' + Math.floor(seconds / 3600) : Math.floor(seconds / 3600);
+            display.innerHTML = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+
+            if (seconds === 60) {
+                message.style.display = 'block'; // Show the message
+            } else {
+                message.style.display = 'none'; // Hide the message
+            }
+        }
+
+        startButton.addEventListener('click', () => {
+            clearInterval(interval);
+            interval = setInterval(() => {
+                seconds++;
+                updateDisplay();
+            }, 1000);
+        });
+
+        stopButton.addEventListener('click', () => {
+            clearInterval(interval);
+        });
+
+        resetButton.addEventListener('click', () => {
+            clearInterval(interval);
+            seconds = 0;
+            updateDisplay();
+            message.style.display = 'none'; // Hide the message when reset
+        });
+    </script>
+</body>
+</html> 
